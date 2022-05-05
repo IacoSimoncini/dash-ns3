@@ -28,9 +28,10 @@ N.B.: il nome del file di uscita non va cambiato in quanto sarà fornito in ingr
 I primi 3 parametri sono modificabili passandoli come comandi da terminale, mentre gli ultimi due devono essere cambiati nel codice dove sono presenti i commenti "//HERE YOU CAN CHANGE...", nelle righe 121 e 123. Se si sceglie di modificare questi il quarto parametro (spazio di movimento) potrebbe essere necessario modificare l'istanziazione di positionAlloc e positionAlloc2, in quanto potrebbero collocare gli ue e gli enb fuori dal nuovo perimetro.
 
 il comando con i parametri passati da terminale (con ad esempio 2 ue, 2 enb, 10sec stop time):
-    cd /bake/source/ns-3.35/
-    ./waf configure --enable-examples --enable-test
-    ./waf --run 'src/dash/examples/dash-example' --numUeNodes=2 --numEnbNodes=2 --stopTime=10.0> 	output.txt
+
+	cd /bake/source/ns-3.35/
+ 	./waf configure --enable-examples --enable-test
+	./waf --run 'src/dash/examples/dash-example' --numUeNodes=2 --numEnbNodes=2 --stopTime=10.0> 	output.txt
     
 ## GENERAZIONE DEI LOG
 Terminata l'esecuzione è necessario spostare o copiare i seguenti files generati nella simulazione: "output.txt", "DlMacStats.txt", "DlPdcpStats.txt", "DlMacStats.txt", all'interno della cartella files precedentemente creata. A questo punto si deve lanciare lo script python "log_producer.py" dall'interno della cartella files, al termine dell'esecuzione la cartella conterrà due file csv contenenti i log relativi al segmento ("log_segmento.csv") e quelli catturati ogni 0.5 secondi("log_05").
