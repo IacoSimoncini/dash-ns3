@@ -114,10 +114,13 @@ main (int argc, char *argv[])
   mobilityenb.Install(enbNodes);
 
   MobilityHelper mobility;
+
   mobility.SetMobilityModel ("ns3::RandomWalk2dMobilityModel",
                              "Mode", StringValue ("Time"),
                              "Time", StringValue ("2s"),
+                             //HERE YOU CAN CHANGE MAX SPEED OF UEs
                              "Speed", StringValue ("ns3::ConstantRandomVariable[Constant=5.0]"),
+                             //HERE YOU CAN CHANGE THE SPACE WHERE UEs ARE MOVING
                              "Bounds", StringValue ("0|10000|0|10000"));
   //mobility.SetPositionAllocator("ns3::RandomDiscPositionAllocator", "X", StringValue ("100.0"), "Y", StringValue ("100.0"), "Rho", StringValue ("ns3::UniformRandomVariable[Min=0|Max=30]"));
   //mobility.Install(enbNodes);
