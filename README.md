@@ -1,4 +1,4 @@
-# SIMULATORE DI RETE NS3 CON PROTOCOLLO DASH
+# Simulazione del traffico dati su una rete cellulare
 
 ## INSTALLAZIONE
 
