@@ -125,5 +125,5 @@ for i in range(len(nodes)):
 result = pd.concat(final)
 result = result.sort_values(by=['time'])
 result['time']= result['time'].apply(lambda x: float(x / 2.0))
-result.to_csv('output.csv', index=False)
+result.to_csv('log_05.csv', index=False)
 log2.to_csv('log_segmento.csv', index=False)
