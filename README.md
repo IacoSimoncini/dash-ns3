@@ -6,7 +6,7 @@
 Seguire le istruzioni contenute nel tutorial contenuto in questa pagina https://www.nsnam.org/documentation/ che spiegano come installare ns3 (la repository github di riferimento è: https://github.com/nsnam/ns-3-dev-git). La libreria è stata testata su linux, è quindi preferibile scegliere l'installazione per linux. Il percorso di installazione utilizzato è quello tramite bake. La versione utilizzata ai fini della realizzazione di questa repository è ns 3-35.
 
 ### DOWNLOAD NS3-DASH
-A questo punto è possibile scaricare la seguente repository all'interno della cartella src di ns3 generata al passo precedente (N.B. rinominare la cartella contente il codice da "dash-ns3" a "dash"). Se si è installato ns3 con bake il percorso sarà bake/source/ns3.35/src. Spostare lo script python "log_producer.py" in una cartella chiamta files, dove si trova la cartella non è importante.
+A questo punto è possibile scaricare la seguente repository all'interno della cartella src di ns3 generata al passo precedente (N.B. rinominare la cartella contente il codice da "dash-ns3" a "dash"). Se si è installato ns3 con bake il percorso sarà bake/source/ns3.35/src.
 
 ## ESECUZIONE SIMULAZIONE
 Adesso è possibile lanciare la simulazione tramite i seguenti comandi (se si è installato ns3 tramite bake):
@@ -34,6 +34,6 @@ il comando con i parametri passati da terminale (con ad esempio 2 ue, 2 enb, 10s
 	./waf --run 'src/dash/examples/dash-example --numUeNodes=2 --numEnbNodes=2 --stopTime=10.0'> 	output.txt
     
 ## GENERAZIONE DEI LOG
-Terminata l'esecuzione è necessario spostare o copiare i seguenti files generati nella simulazione: "output.txt", "DlMacStats.txt", "DlPdcpStats.txt", "DlMacStats.txt", all'interno della cartella files precedentemente creata. A questo punto si deve lanciare lo script python "log_producer.py" dall'interno della cartella files, al termine dell'esecuzione la cartella conterrà due file csv contenenti i log relativi al segmento ("log_segmento.csv") e quelli catturati ogni 0.5 secondi("log_05").
+Terminata l'esecuzione è necessario spostare o copiare i seguenti files generati nella simulazione: "output.txt", "DlMacStats.txt", "DlPdcpStats.txt", "DlRsrpSinrStats.txt", all'interno della stessa cartella nella quale sono contenuti gli script python "preprocess.py" e "log_producer.py". Prima di procedere alla generazione dei csv, lanciare lo script "preprocess.py" al fine di ridurre la granularità (e soprattutto le dimensioni di "DlRsrpStats.txt"). A questo punto si può lanciare lo script python "log_producer.py", al termine dell'esecuzione la cartella conterrà due file csv contenenti i log relativi al segmento ("log_segmento.csv") e quelli catturati ogni 0.5 secondi("log_05").
 
 	
