@@ -6,9 +6,22 @@ from pathlib import Path
 import warnings
 warnings.filterwarnings("ignore")
 
+def mode(x):
+    y = pd.Series.mode(x)
+    try:
+        return y[0]
+    except: 
+        return y
+
+def median(x):
+    y = pd.Series.median(x)
+    try:
+        return y[0]
+    except: 
+        return y
+
 
 #Conversione file di output in dataframe
-
 a_file = open("output.txt", "r")
 lines = a_file.readlines()
 a_file.close()
@@ -20,6 +33,7 @@ for l in lines:
 for i in range(pos):
     del lines[0]
 pos=len(lines)-1
+
 """
 Codice che cancella le eventuali linee di errore stampate nell'output.
 Da inserire se le righe in più non permettono di generare il dataframe,
@@ -31,32 +45,27 @@ while True:
     del lines[pos]
     pos=pos-1
 """
+
 ind=lines[0].replace("\n","").split(",")
 del lines[0]
 log_segmento = pd.DataFrame([l.replace("\n","").split(",") for l in lines],columns=ind)
 
 # creazione altri dataframe con i file nella directory files e conversione del formato dei valori
 directory = Path(os.path.abspath("output.txt")).parent.absolute()
-li = []
-i=0
-for filename in sorted(os.listdir(directory)):
-    if 'Stats' in filename:
-        df = pd.read_csv(filename, delimiter='\t', header=0, index_col=False)
-        li.append(df)
 
 log1 = pd.DataFrame()
 log2 = pd.DataFrame()
-rsrp = li[2]
-mcs = li[0]
-pdcp = li[1]
+rsrp = pd.read_csv("processedSinr.txt", delimiter='\t', header=0, index_col=False, error_bad_lines=False)
+mcs = pd.read_csv("DlMacStats.txt", delimiter='\t', header=0, index_col=False, error_bad_lines=False)
+pdcp = pd.read_csv("DlPdcpStats.txt", delimiter='\t', header=0, index_col=False, error_bad_lines=False)
 
 mcsTb1 = mcs[['% time', 'mcsTb1', 'IMSI', 'sizeTb1']].astype(float)
-mcsTb1['IMSI'] = mcsTb1['IMSI'].astype(int)
+mcsTb1['IMSI'] = mcsTb1['IMSI'].astype("Int64")
 mcsTb1['IMSI'] = mcsTb1['IMSI'].apply(lambda x: x - 1)
 mcsTb1.rename(columns = {'sizeTb1': 'mac_throughput'}, inplace = True)
 
 rsrp = rsrp[['% time', 'rsrp', 'IMSI', 'sinr']].astype(float)
-rsrp['IMSI'] = rsrp['IMSI'].astype(int)
+rsrp['IMSI']=rsrp['IMSI'].astype(int)
 rsrp['IMSI'] = rsrp['IMSI'].apply(lambda x: x - 1)
 
 pdcp['% time'] = pdcp['end']
@@ -97,15 +106,15 @@ for i in range(len(nodes)):
     colmcs[i]['% time'] = colmcs[i]['% time'].apply(lambda x: math.trunc(x))
     temp['mac_throughput'] = colmcs[i].groupby(['% time']).sum()['mac_throughput']
     temp['mac_throughput'] = temp['mac_throughput'].apply(lambda x: x * 16)
-    temp['mode_mcs'] = colmcs[i].groupby(['% time'])['mcsTb1'].agg(pd.Series.mode).to_frame()
-    temp['median_mcs'] = colmcs[i].groupby(['% time'])['mcsTb1'].agg(pd.Series.median).to_frame()
+    temp['mode_mcs'] = colmcs[i].groupby(['% time'])['mcsTb1'].agg(lambda x: mode(x)).to_frame()
+    temp['median_mcs'] = colmcs[i].groupby(['% time'])['mcsTb1'].agg(lambda x: median(x)).to_frame()
     temp['min_mcs'] = colmcs[i].groupby(['% time']).min()['mcsTb1']
     temp['max_mcs'] = colmcs[i].groupby(['% time']).max()['mcsTb1']
 
     colrsrp[i]['% time'] = colrsrp[i]['% time'].apply(lambda x: x * 2)
     colrsrp[i]['% time'] = colrsrp[i]['% time'].apply(lambda x: math.trunc(x))
     temp['mean_rsrp'] = colrsrp[i].groupby(['% time']).mean()['rsrp']
-    temp['median_rsrp'] = colrsrp[i].groupby(['% time'])['rsrp'].agg(pd.Series.median).to_frame()
+    temp['median_rsrp'] = colrsrp[i].groupby(['% time'])['rsrp'].agg(lambda x: median(x)).to_frame()
     temp['mean_sinr'] = colrsrp[i].groupby(['% time']).mean()['sinr']
 
     colpdcp[i]['% time'] = colpdcp[i]['% time'].apply(lambda x: x * 2)
