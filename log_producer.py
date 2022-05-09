@@ -56,7 +56,7 @@ mcsTb1['IMSI'] = mcsTb1['IMSI'].apply(lambda x: x - 1)
 mcsTb1.rename(columns = {'sizeTb1': 'mac_throughput'}, inplace = True)
 
 rsrp = rsrp[['% time', 'rsrp', 'IMSI', 'sinr']].astype(float)
-rsrp['IMSI']==rsrp['IMSI'].astype(int)
+rsrp['IMSI'] = rsrp['IMSI'].astype(int)
 rsrp['IMSI'] = rsrp['IMSI'].apply(lambda x: x - 1)
 
 pdcp['% time'] = pdcp['end']
